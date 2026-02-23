@@ -66,6 +66,7 @@ nbdist/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+.metals/
 
 # Cursor
 .cursor/
