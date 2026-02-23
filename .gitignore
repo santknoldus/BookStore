@@ -59,6 +59,12 @@ nbdist/
 # VS Code
 .vscode/
 
+# Metals (Scala)
+.metals/
+.bloop/
+.bsp/
+metals.sbt
+
 # macOS
 .DS_Store
 
@@ -66,7 +72,6 @@ nbdist/
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-.metals/
 
 # Cursor
 .cursor/
