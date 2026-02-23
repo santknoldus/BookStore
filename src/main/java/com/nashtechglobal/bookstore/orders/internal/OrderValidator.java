@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Internal implementation detail of the orders module.
- * MUST NOT be referenced by any class outside com.bookstore.orders.
+ * Should NOT be referenced by any class outside the orders module.
  * Spring Modulith enforces this via the .internal package convention.
  */
 @Component

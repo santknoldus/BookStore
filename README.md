@@ -12,9 +12,9 @@ Spring Modulith enables you to build well-structured, maintainable monoliths tha
 ---
 
 ## 📋 Table of Contents
-- [The Problem](#the-problem)
-- [The Solution](#the-solution)
+- [What Makes This Project Special](#what-makes-this-project-special)
 - [Module Structure](#module-structure)
+- [Implementation Highlights](#implementation-highlights)
 - [Spring Modulith Principles](#spring-modulith-principles-applied)
 - [Running the Project](#running-the-project)
 - [Testing](#testing)
@@ -23,52 +23,27 @@ Spring Modulith enables you to build well-structured, maintainable monoliths tha
 
 ---
 
-## ❌ The Problem
+## ✨ What Makes This Project Special
 
-The original code violated modular monolith principles:
-
-```java
-// ❌ BEFORE: InventoryService directly accessed internal implementation
-package com.bookstore.inventory;
-
-import com.bookstore.orders.internal.OrderValidator; // ❌ BAD!
-
-@Service
-public class InventoryService {
-    private final OrderValidator validator; // Direct dependency on internal class
-    
-    public InventoryService(OrderValidator validator) {
-        this.validator = validator;
-    }
-}
-```
-
-**Why this is problematic:**
-1. `OrderValidator` is in an `.internal` package, signifying it's a private implementation detail
-2. Spring Modulith treats `*.internal.*` packages as module-private
-3. Cross-module access to internal packages violates encapsulation
-4. The `modules.verify()` test fails with a modularity violation error
-5. Changes to `OrderValidator` could break `InventoryService` unexpectedly
-
----
-
-## ✅ The Solution
+This project demonstrates the **correct** way to build a modular monolith using Spring Modulith. It showcases:
 
 ### Key Principle
 > **Expose a public API from each module. Other modules may only depend on that public API — never on internal implementation classes.**
 
-### What Changed
+### Architecture Highlights
 
-| Aspect | Before ❌ | After ✅ |
-|--------|----------|----------|
-| **Dependency** | `InventoryService` → `OrderValidator` (internal) | `InventoryService` → `OrderService` (public API) |
-| **Public API** | No public facade in `orders` module | `OrderService` acts as the public API |
-| **Encapsulation** | `OrderValidator` leaked across module boundary | `OrderValidator` hidden in `orders.internal` |
-| **Coupling** | Tight coupling to implementation details | Loose coupling to stable public interface |
+| Aspect | Implementation |
+|--------|----------------|
+| **Public API** | `OrderService` acts as the module's public facade |
+| **Encapsulation** | `OrderValidator` hidden in `orders.internal` package |
+| **Module Communication** | `InventoryService` → `OrderService` (public API only) |
+| **Verification** | Automated tests ensure modularity rules are enforced |
 
-### Refactored Code
+---
 
-**OrderService.java** (Public API):
+## 💡 Implementation Highlights
+
+**OrderService.java** (Public API - Facade Pattern):
 ```java
 package com.nashtechglobal.bookstore.orders;
 
@@ -87,7 +62,7 @@ public class OrderService {
 }
 ```
 
-**InventoryService.java** (Consumer):
+**InventoryService.java** (Uses Public API):
 ```java
 package com.nashtechglobal.bookstore.inventory;
 

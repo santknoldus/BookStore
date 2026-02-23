@@ -4,9 +4,9 @@ import com.nashtechglobal.bookstore.orders.internal.OrderValidator;
 import org.springframework.stereotype.Service;
 
 /**
- * Public API for the orders module.
- * This is the ONLY class that other modules are allowed to depend on.
- * It internally delegates to OrderValidator, keeping validation logic hidden.
+ * Public API (Facade) for the orders module.
+ * This is the ONLY class that other modules should depend on.
+ * It internally delegates to OrderValidator, keeping validation logic encapsulated.
  */
 @Service
 public class OrderService {
